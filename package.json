@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "a tool to organize my pdf files",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "test": "NODE_ENV=test jest",
     "start": "node server.js"

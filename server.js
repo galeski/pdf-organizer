@@ -1,10 +1,12 @@
-const http = require("http");
-const multer = require("multer");
-const express = require("express");
-const fs = require("fs-extra");
+import http from "http";
+import multer from "multer";
+import express from "express";
+import fs from "fs-extra";
 
 const hostname = "localhost";
 const port = 3000;
+
+import readPdf from "./controller/pdfController.mjs";
 
 // MOCK PURPOSES
 let currentUserId = 0;
@@ -36,6 +38,7 @@ app.post("/upload/:userId", (req, res) => {
     if (!err) {
       const uploadedFile = req.file;
       console.log(uploadedFile);
+      readPdf(uploadedFile.path);
       res.statusCode = 200;
       res.end("File uploaded successfully!");
     } else {
@@ -46,4 +49,4 @@ app.post("/upload/:userId", (req, res) => {
   });
 });
 
-module.exports = { app, server };
+// module.exports = { app, server };
