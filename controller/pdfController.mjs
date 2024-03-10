@@ -9,17 +9,18 @@ function splitText(text) {
   return newString;
 }
 
+let items = [];
+
 export function readPdf(file) {
   const pdfReader = new PdfReader();
 
-  let items = [];
-  let text = "";
   let idx = 0;
 
   pdfReader.parseFileItems(String(file), (error, item) => {
     if (error) console.error("error:", error);
-    else if (!item) console.warn("end of file");
-    else if (item.text) {
+    else if (!item) {
+      console.warn("end of file");
+    } else if (item.text) {
       let currText = String(item.text);
       console.log(idx, item.text);
       idx++;
@@ -27,9 +28,7 @@ export function readPdf(file) {
     }
   });
 
-  for (let item of items) {
-    console.log(item.text);
-  }
+  console.log(items);
 }
 
 export default readPdf;
