@@ -1,34 +1,31 @@
 import { PdfReader } from "pdfreader";
+import crypto from "crypto";
 
-function splitText(text) {
-  const regex = /[\r\n]/g;
-  const newString = text.replace(regex, "").slice(0, 5);
-
-  console.log(newString);
-
-  return newString;
-}
-
-let items = [];
-
-export function readPdf(file) {
-  const pdfReader = new PdfReader();
-
+async function parsePdf(file) {
+  const items = [];
   let idx = 0;
 
-  pdfReader.parseFileItems(String(file), (error, item) => {
-    if (error) console.error("error:", error);
-    else if (!item) {
-      console.warn("end of file");
-    } else if (item.text) {
-      let currText = String(item.text);
-      console.log(idx, item.text);
-      idx++;
-      items.push(item);
-    }
+  return new Promise((resolve, reject) => {
+    new PdfReader().parseFileItems(String(file), (err, item) => {
+      if (err) {
+        reject(err);
+      } else if (!item) {
+        resolve(items);
+      } else if (item.text) {
+        idx++;
+        items.push(item.text);
+      }
+    });
   });
+}
 
-  console.log(items);
+export async function readPdf(file) {
+  const items = await parsePdf(file);
+
+  let hash = crypto.createHash("md5").update(items.join("")).digest("hex");
+
+  // kinda ugly
+  return [hash, items];
 }
 
 export default readPdf;

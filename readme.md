@@ -1,6 +1,7 @@
 PDF Organizer
 
 Stack: nodejs, express, multer, front idk yet (vanilla js, maybe htmx or react)
+Dev deps: nodemon
 
 TODO:
 1. ability to add pdf files to the server.
