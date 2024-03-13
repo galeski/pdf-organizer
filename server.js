@@ -52,6 +52,12 @@ app.post("/upload/:userId", (req, res) => {
         debugMessage("File hash already exists. Reuploading!");
       }
 
+<<<<<<< Updated upstream
+=======
+      createFolder("./images/" + String(req.params.userId));
+      pdfToPic(uploadedFile.path, uploadedFile.filename, req.params.userId);
+
+>>>>>>> Stashed changes
       res.statusCode = 200;
       res.end("File uploaded successfully!");
     } else {
