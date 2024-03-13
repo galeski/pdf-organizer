@@ -7,6 +7,7 @@ const hostname = "localhost";
 const port = 3000;
 
 import readPdf from "./controller/pdfController.mjs";
+import pdfToPic from "./controller/pdfToPic.mjs";
 
 // MOCK PURPOSES
 let currentUserId = 0;
@@ -14,6 +15,10 @@ let fileHashes = {};
 
 const debugMessage = (message) => {
   console.log(String(message));
+};
+
+const createFolder = (path) => {
+  fs.mkdirsSync(path);
 };
 
 const upload = multer({
@@ -43,8 +48,9 @@ app.post("/upload/:userId", (req, res) => {
   upload.single("file")(req, res, async function (err) {
     if (!err) {
       const uploadedFile = req.file;
-      console.log(uploadedFile);
       const fileHash = await readPdf(uploadedFile.path)[0];
+
+      console.log(uploadedFile);
 
       if (!fileHashes[fileHash]) {
         fileHashes[fileHash] = true;
@@ -52,12 +58,9 @@ app.post("/upload/:userId", (req, res) => {
         debugMessage("File hash already exists. Reuploading!");
       }
 
-<<<<<<< Updated upstream
-=======
       createFolder("./images/" + String(req.params.userId));
       pdfToPic(uploadedFile.path, uploadedFile.filename, req.params.userId);
 
->>>>>>> Stashed changes
       res.statusCode = 200;
       res.end("File uploaded successfully!");
     } else {
