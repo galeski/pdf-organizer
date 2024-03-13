@@ -71,4 +71,23 @@ app.post("/upload/:userId", (req, res) => {
   });
 });
 
+async function readFiles(path, arr) {
+  fs.readdirSync(path).forEach((file) => {
+    arr.push(file);
+  });
+
+  return arr;
+}
+
+app.get("/uploads/:userId", async (req, res) => {
+  const uploadFolder = "./uploads/" + req.params.userId;
+
+  let userFiles = await readFiles(uploadFolder, []);
+
+  console.log(userFiles);
+
+  res.statusCode = 200;
+  res.send(userFiles);
+});
+
 // module.exports = { app, server };

@@ -1,17 +1,25 @@
 #!/bin/bash
 
-UPLOADS_DIR="./uploads"
+cleanup_directory() {
+    local DIR=$1
 
-if [ -d "$UPLOADS_DIR" ]; then
-    echo "Cleaning up $UPLOADS_DIR..."
-    rm -rf "$UPLOADS_DIR"/*
-    if [ $? -eq 0 ]; then
-        echo "Cleanup successful."
+    if [ -d "$DIR" ]; then
+        echo "Cleaning up $DIR..."
+        rm -rf "$DIR"/*
+        if [ $? -eq 0 ]; then
+            echo "Cleanup successful."
+        else
+            echo "Failed to clean up $DIR."
+            exit 1
+        fi
     else
-        echo "Failed to clean up $UPLOADS_DIR."
+        echo "Directory $DIR does not exist. Exiting with failure."
         exit 1
     fi
-else
-    echo "Directory $UPLOADS_DIR does not exist. Exiting with failure."
-    exit 1
-fi
+}
+
+UPLOADS_DIR="./uploads"
+IMAGES_DIR="./images"
+
+cleanup_directory "$UPLOADS_DIR"
+cleanup_directory "$IMAGES_DIR"
