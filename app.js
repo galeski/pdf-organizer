@@ -1,14 +1,14 @@
 import multer from "multer";
 import express from "express";
 import fs from "fs-extra";
-
-const router = express.Router();
-
 import readPdf from "./controller/pdfController.mjs";
 import pdfToPic from "./controller/pdfToPic.mjs";
 
+const router = express.Router();
+const debug = true;
+
 const debugMessage = (message) => {
-  console.log(String(message));
+  if (debug) console.log(String(message));
 };
 
 const createFolder = (path) => {
@@ -31,13 +31,13 @@ const upload = multer({
 });
 
 router.post("/upload/:userId", (req, res) => {
-  console.log(req.params);
+  debugMessage(req.params);
   upload.single("file")(req, res, async function (err) {
     if (!err) {
       const uploadedFile = req.file;
       const fileHash = await readPdf(uploadedFile.path)[0];
 
-      console.log(uploadedFile);
+      debugMessage(uploadedFile);
 
       if (!fileHashes[fileHash]) {
         fileHashes[fileHash] = true;
@@ -51,7 +51,7 @@ router.post("/upload/:userId", (req, res) => {
       res.statusCode = 200;
       res.end("File uploaded successfully!");
     } else {
-      if (err) console.log(err);
+      if (err) debugMessage(err);
       res.statusCode = 500;
       res.end("Error uploading file");
     }
@@ -71,10 +71,10 @@ router.get("/uploads/:userId", async (req, res) => {
 
   let userFiles = await readFiles(uploadFolder, []);
 
-  console.log(userFiles);
+  debugMessage(userFiles);
 
   res.statusCode = 200;
-  res.send(userFiles);
+  res.send({ userFiles: userFiles });
 });
 
 export default router;
