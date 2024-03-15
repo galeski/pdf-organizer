@@ -6,10 +6,11 @@ Runtime deps: imagemagick (might switch to pdf.js)
 
 TODO:
 
-1. ability to add pdf files to the server.
-2. ability to read basic metadata of pdf files
-3. ability to take a snapshot of pdf cover page
-4. ability to add some additional useful data, like word count, language, maybe AI summarization
+1. ability to add pdf files to the server. DONE
+2. ability to read basic metadata of pdf files DONE
+3. ability to take a snapshot of pdf cover page DONE
+4. ability to add some additional useful data, like word count, language, maybe AI summarization WIP
+5. DB WORK
 
 Schema:
 User {
