@@ -3,6 +3,7 @@ node_modules/
 package-lock.json
 uploads
 uploads/
-.DS_Store
 images
 images/
+test-files
+test-files/
