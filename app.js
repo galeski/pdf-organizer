@@ -7,6 +7,10 @@ import pdfToPic from "./controller/pdfToPic.mjs";
 const router = express.Router();
 const debug = true;
 
+// MOCK PURPOSES
+let currentUserId = 0;
+let fileHashes = {};
+
 const debugMessage = (message) => {
   if (debug) console.log(String(message));
 };
@@ -58,12 +62,24 @@ router.post("/upload/:userId", (req, res) => {
   });
 });
 
-async function readFiles(path, arr) {
-  fs.readdirSync(path).forEach((file) => {
-    arr.push(file);
-  });
+async function readFiles(path, files) {
+  try {
+    fs.readdirSync(path).forEach((file) => {
+      files.push(file);
+    });
+  } catch (error) {
+    if (error.code === "ENOENT") {
+      console.error("Directory does not exist:", path);
+    } else {
+      console.error("An error occurred:", error);
+    }
+  }
 
-  return arr;
+  if (!files.length) {
+    files = "No user files";
+  }
+
+  return files;
 }
 
 router.get("/uploads/:userId", async (req, res) => {
@@ -74,7 +90,7 @@ router.get("/uploads/:userId", async (req, res) => {
   debugMessage(userFiles);
 
   res.statusCode = 200;
-  res.send({ userFiles: userFiles });
+  res.send({ userFiles });
 });
 
 export default router;
