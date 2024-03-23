@@ -5,7 +5,7 @@
   <title>File Listing</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    /* dfdsf */
+
   </style>
 </head>
 
@@ -15,7 +15,10 @@
   <button id="fetchFiles">Fetch Files</button>
   <button id="uploadTrigger">Upload</button>
   <input type="file" id="uploadFiles" name="filename">
-  <div class="files" id="fileList"></div>
+  <div class="workbench">
+    <div class="files displayHalf left" id="fileList"></div>
+    <div class="fileInfo displayHalf right" id="fileInfo">TEST TEST</div>
+  </div>
 
   <script>
     const fetchFilesButton = document.getElementById('fetchFiles');
@@ -23,6 +26,10 @@
     const uploadTriggerButton = document.getElementById('uploadTrigger');
     const userIdInput = document.getElementById('userId');
     const fileListDiv = document.getElementById('fileList');
+
+    createImage = (userId, filename) => {
+      return `<img src="../images/${encodeURIComponent(userId)}/${filename}.1.png" alt="Image of ${filename}">`;
+    }
 
     fetchFilesButton.addEventListener('click', async () => {
       const userId = userIdInput.value.trim(); // Trim to remove any leading/trailing whitespace
@@ -45,14 +52,15 @@
           files.forEach(filename => {
             const fileDiv = document.createElement('div');
             fileDiv.classList.add('file-item');
+            containerDiv.setAttribute("id", filename);
 
             const p = document.createElement('p');
             p.textContent = filename;
             fileDiv.appendChild(p);
 
-            const img = document.createElement('img');
-            img.src = `../images/${encodeURIComponent(userId)}/${filename}.1.png`;
-            img.alt = `Image of ${filename}`;
+            let img = document.createElement('div');
+            img.innerHTML = createImage(userId, filename);
+            containerDiv.appendChild(img);
 
             fileDiv.appendChild(img);
             containerDiv.appendChild(fileDiv);
@@ -94,6 +102,18 @@
         console.error('No file selected');
       }
     });
+
+    // TODO: WORK MORE ON THIS
+    document.getElementById('fileList').addEventListener('click', function (event) {
+      // Check if the clicked element has the class "file-item"
+      if (event.target.classList.contains('file-item')) {
+        // Handle the click event here
+        console.log('Clicked:', event.target.textContent); // Example: Logging the text content of the clicked div
+      }
+    });
+
+    // LEFT fileList
+    // RIGHT fileInfo
   </script>
 </body>
 
