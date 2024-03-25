@@ -17,8 +17,14 @@
   <input type="file" id="uploadFiles" name="filename">
   <div class="workbench">
     <div class="files displayHalf left" id="fileList"></div>
-    <div class="fileInfo displayHalf right" id="fileInfo">TEST TEST</div>
+    <div class="fileInfo displayHalf right" id="fileInfo">
+      <h2>Filename: </h2>
+      <p id="file-name">Filename</p>
+      <h2>Content:</h2>
+      <p id="file-content">Content</p>
+    </div>
   </div>
+  <button id="testTrigger">(TEST) replace content</button>
 
   <script>
     const fetchFilesButton = document.getElementById('fetchFiles');
@@ -26,6 +32,25 @@
     const uploadTriggerButton = document.getElementById('uploadTrigger');
     const userIdInput = document.getElementById('userId');
     const fileListDiv = document.getElementById('fileList');
+    const testButton = document.getElementById('testTrigger');
+
+    testButton.addEventListener('click', async () => {
+      console.log("working");
+      let filename = "test";
+      try {
+        await fetch(`http://localhost:3000/info/${encodeURIComponent(filename)}`).then(response => {
+          return response.json()
+        }).then(data => {
+          let fileNameField = document.getElementById('file-name');
+          let contentField = document.getElementById('file-content');
+          fileNameField.innerHTML = data.fileName;
+          contentField.innerHTML = data.content;
+        });
+      } catch (err) {
+        console.log(err)
+        console.error('Error fetching files:', error);
+      }
+    })
 
     createImage = (userId, filename) => {
       return `<img src="../images/${encodeURIComponent(userId)}/${filename}.1.png" alt="Image of ${filename}">`;

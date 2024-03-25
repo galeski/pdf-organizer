@@ -3,9 +3,13 @@ import express from "express";
 import fs from "fs-extra";
 import readPdf from "./controller/pdfController.mjs";
 import pdfToPic from "./controller/pdfToPic.mjs";
+import printFileInfoHtml from "./templates/fileInfo.mjs";
+import bodyParser from "body-parser";
 
 const router = express.Router();
 const debug = true;
+
+router.use(bodyParser.json());
 
 // MOCK PURPOSES
 let currentUserId = 0;
@@ -91,6 +95,15 @@ router.get("/uploads/:userId", async (req, res) => {
 
   res.statusCode = 200;
   res.send({ userFiles });
+});
+
+router.get("/info/:fileInfo", (req, res) => {
+  console.log("working");
+  const fileName = req.params.fileInfo;
+
+  res.statusCode = 200;
+  res.set("Content-Type", "text/html");
+  res.send(printFileInfoHtml(fileName));
 });
 
 export default router;
