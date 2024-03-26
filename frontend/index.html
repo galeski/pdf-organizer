@@ -70,9 +70,12 @@
 
         fileListDiv.innerHTML = '';
 
-        if (files.length > 0) {
+        // logs errors if the server responds with a string (in case of zero files)
+        if (files.length > 0 && typeof files !== 'string') {
           const containerDiv = document.createElement('div');
           containerDiv.classList.add('file-list-container');
+
+          console.log(typeof files)
 
           files.forEach(filename => {
             const fileDiv = document.createElement('div');
